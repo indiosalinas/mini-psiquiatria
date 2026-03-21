@@ -15,19 +15,90 @@ r = st.session_state.respostas
 # -----------------------------
 # MÓDULO A - DEPRESSÃO
 # -----------------------------
+# -----------------------------
+# MÓDULO A - EPISÓDIO DEPRESSIVO MAIOR
+# -----------------------------
 st.header("Módulo A - Episódio Depressivo Maior")
 
-r["A1"] = st.radio("Humor deprimido?", ["Não", "Sim"], key="A1") == "Sim"
-r["A2"] = st.radio("Perda de interesse?", ["Não", "Sim"], key="A2") == "Sim"
+# A1
+r["A1"] = st.radio(
+    "Nas duas últimas semanas, sentiu-se triste, desanimado ou deprimido na maior parte do dia?",
+    ["Não", "Sim"], key="A1"
+) == "Sim"
 
+# A2
+r["A2"] = st.radio(
+    "Nas duas últimas semanas, perdeu o interesse ou prazer pelas coisas?",
+    ["Não", "Sim"], key="A2"
+) == "Sim"
+
+# Condição para seguir
 if r["A1"] or r["A2"]:
-    r["A3a"] = st.checkbox("Alteração de apetite")
-    r["A3b"] = st.checkbox("Insônia/hipersonia")
-    r["A3c"] = st.checkbox("Agitação/lentificação")
-    r["A3d"] = st.checkbox("Fadiga")
-    r["A3e"] = st.checkbox("Culpa")
-    r["A3f"] = st.checkbox("Concentração")
-    r["A3g"] = st.checkbox("Ideação de morte")
+
+    st.subheader("Sintomas associados (A3)")
+
+    r["A3a"] = st.checkbox("Alteração de apetite ou peso (±5%)")
+    r["A3b"] = st.checkbox("Problemas de sono")
+    r["A3c"] = st.checkbox("Agitação ou lentificação psicomotora")
+    r["A3d"] = st.checkbox("Fadiga ou falta de energia")
+    r["A3e"] = st.checkbox("Sentimento de culpa ou inutilidade")
+    r["A3f"] = st.checkbox("Dificuldade de concentração")
+    r["A3g"] = st.checkbox("Pensamentos de morte ou autoagressão")
+
+    total_A3 = sum([
+        r["A3a"], r["A3b"], r["A3c"],
+        r["A3d"], r["A3e"], r["A3f"], r["A3g"]
+    ])
+
+    # Critério A4
+    if total_A3 >= 3:
+        st.success("Critério para Episódio Depressivo Maior ATUAL")
+
+        # A5a
+        r["A5a"] = st.radio(
+            "Teve outros períodos semelhantes na vida?",
+            ["Não", "Sim"], key="A5a"
+        ) == "Sim"
+
+        if r["A5a"]:
+            # A5b
+            r["A5b"] = st.radio(
+                "Houve intervalo de pelo menos 2 meses sem sintomas?",
+                ["Não", "Sim"], key="A5b"
+            ) == "Sim"
+
+            if r["A5b"]:
+                st.warning("Episódio Depressivo Maior RECORRENTE")
+
+        # -----------------------------
+        # MELANCÓLICO (A')
+        # -----------------------------
+        st.subheader("Características Melancólicas")
+
+        r["A6"] = st.radio(
+            "Perdeu a capacidade de reagir a coisas agradáveis?",
+            ["Não", "Sim"], key="A6"
+        ) == "Sim"
+
+        if r["A6"]:
+
+            r["A7a"] = st.checkbox("Depressão diferente do luto")
+            r["A7b"] = st.checkbox("Pior pela manhã")
+            r["A7c"] = st.checkbox("Acorda muito cedo")
+            r["A7d"] = r["A3c"]  # reaproveita psicomotor
+            r["A7e"] = r["A3a"]  # reaproveita apetite
+            r["A7f"] = st.checkbox("Culpa excessiva")
+
+            total_melancolico = sum([
+                r["A7a"], r["A7b"], r["A7c"],
+                r["A7d"], r["A7e"], r["A7f"]
+            ])
+
+            if total_melancolico >= 3:
+                st.error("Depressão com características melancólicas")
+
+else:
+    st.info("Critério inicial não preenchido — seguir para próximo módulo")
 
 # -----------------------------
 # MÓDULO D - MANIA
