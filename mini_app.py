@@ -71,49 +71,42 @@ if r["A1"] or r["A2"]:
                 st.warning("Episódio Depressivo Maior RECORRENTE")
 
         # -----------------------------
-        # MELANCÓLICO (A')
-        # -----------------------------
-        st.subheader("Características Melancólicas")
+    # -----------------------------
+# MELANCÓLICO (A')
+# -----------------------------
+st.subheader("Características Melancólicas")
 
-# -----------------------------
-# A6 - REATIVIDADE (CORRETO MINI)
-# -----------------------------
+# A6
 A6_result = False
 
-# Regra automática: A2 = SIM → A6 = SIM
 if r.get("A2"):
-    st.info("A2 = SIM → perda de interesse → A6 positivo automaticamente")
+    st.info("A2 = SIM → A6 automaticamente positivo")
     A6_result = True
 
 else:
-    # A6a
     r["A6a"] = st.radio(
-        "Durante o pior momento, perdeu a capacidade de reagir a coisas agradáveis?",
+        "Perdeu a capacidade de reagir a coisas agradáveis?",
         ["Não", "Sim"],
         key="A6a"
     ) == "Sim"
 
-    # A6b (só se A6a for NÃO)
     if not r["A6a"]:
         r["A6b"] = st.radio(
-            "Mesmo com algo agradável, era incapaz de se sentir melhor?",
+            "Mesmo com algo agradável, não conseguia melhorar?",
             ["Não", "Sim"],
             key="A6b"
         ) == "Sim"
     else:
         r["A6b"] = False
 
-    # Regra final
     A6_result = r["A6a"] or r["A6b"]
 
-# salva resultado final
 r["A6_final"] = A6_result
 
 
-# -----------------------------
-# CONTINUAÇÃO (A7)
-# -----------------------------
+# A7
 if r["A6_final"]:
+
     r["A7a"] = st.checkbox("Depressão diferente do luto", key="A7a")
     r["A7b"] = st.checkbox("Pior pela manhã", key="A7b")
     r["A7c"] = st.checkbox("Acorda muito cedo", key="A7c")
@@ -128,24 +121,6 @@ if r["A6_final"]:
 
     if total_A7 >= 3:
         st.error("Depressão com características melancólicas")
-
-            r["A7a"] = st.checkbox("Depressão diferente do luto")
-            r["A7b"] = st.checkbox("Pior pela manhã")
-            r["A7c"] = st.checkbox("Acorda muito cedo")
-            r["A7d"] = r["A3c"]  # reaproveita psicomotor
-            r["A7e"] = r["A3a"]  # reaproveita apetite
-            r["A7f"] = st.checkbox("Culpa excessiva")
-
-            total_melancolico = sum([
-                r["A7a"], r["A7b"], r["A7c"],
-                r["A7d"], r["A7e"], r["A7f"]
-            ])
-
-            if total_melancolico >= 3:
-                st.error("Depressão com características melancólicas")
-
-else:
-    st.info("Critério inicial não preenchido — seguir para próximo módulo")
 
 # -----------------------------
 # MÓDULO D - MANIA
