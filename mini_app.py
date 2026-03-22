@@ -114,7 +114,6 @@ r["A6_final"] = A6_result
 # CONTINUAÇÃO (A7)
 # -----------------------------
 if r["A6_final"]:
-
     r["A7a"] = st.checkbox("Depressão diferente do luto", key="A7a")
     r["A7b"] = st.checkbox("Pior pela manhã", key="A7b")
     r["A7c"] = st.checkbox("Acorda muito cedo", key="A7c")
