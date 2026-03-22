@@ -126,7 +126,7 @@ r["J1"] = st.radio("Preocupação excessiva por meses?", ["Não", "Sim"], key="J
 if r["J1"]:
     r["J2a"] = st.checkbox("Inquietação")
     r["J2b"] = st.checkbox("Fadiga")
-    r["J2c"] = st.checkbox("Dificuldade de concentração")
+    r["J2c"] = st.checkbox("Dificuldade de concentração", key="J2c")
     r["J2d"] = st.checkbox("Irritabilidade")
     r["J2e"] = st.checkbox("Tensão muscular")
     r["J2f"] = st.checkbox("Alteração do sono")
